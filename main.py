@@ -15,7 +15,8 @@ REVIEW = "One star. I asked Monday's waiter for the weekend back and he brought 
 
 
 def output_path() -> Path:
-    return Path(os.environ.get("OUTPUT_DIR", "/output")) / "entry.txt"
+    base = os.environ.get("MAKEFUN_OUTPUT_DIR") or os.environ.get("OUTPUT_DIR") or "/output"
+    return Path(base) / "entry.txt"
 
 
 def write_review(target: Path) -> None:
@@ -35,6 +36,7 @@ def check_written(target: Path) -> None:
     assert len(back.split()) == 21, "entry.txt is not 21 words"
     assert "\n" not in back, "entry.txt must be a single line"
     assert back == back.strip(), "entry.txt must not start or end with space"
+    assert "  " not in back, "entry.txt must not contain a double space"
 
 
 def main() -> None:
